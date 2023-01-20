@@ -1,7 +1,11 @@
+from catalog.models import Product
 from django.shortcuts import render
 
 def home(request):
-    return render(request, 'catalog/home.html')
+    context = {
+        'object_list': Product.objects.all()
+    }
+    return render(request, 'catalog/home.html', context)
 
 def contacts(request):
     if request.method == 'POST':
@@ -9,3 +13,6 @@ def contacts(request):
         print(f"Phone: {request.POST.get('phone')}")
         print(f"Message: {request.POST.get('message')}")
     return render(request, 'catalog/contact.html')
+
+def base(request):
+    return render(request, 'catalog/base.html')
