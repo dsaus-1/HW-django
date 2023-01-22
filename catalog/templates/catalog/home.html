@@ -1,5 +1,6 @@
 {% extends 'catalog/base.html' %}
 {% load mediapath_filter %}
+{% load mediapath_tag %}
 
 
 {% block home %}
@@ -30,7 +31,8 @@
             <td>{{ object.product_name|title }}</td>
             <td>{{ object.descriptions|slice:":100"|capfirst}}</td>
 {#            <td><img src="/media/{{ object.image_preview}}" height=100 /></td>#}
-            <td><img src="{{ object.image_preview|mediapath}}" height=100 /></td>
+{#            <td><img src="{{ object.image_preview|mediapath}}" height=100 /></td>#}
+            <td><img src="{% mediapath object.image_preview %}" height=100 /></td>
             <td>{{ object.category }}</td>
             <td>{{ object.price }}</td>
             <td>{{ object.date_created }}</td>
