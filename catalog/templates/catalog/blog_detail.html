@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+{% load mediapath_filter %}
+
+{% block detail %}
+
+    <figure class="figure text-center">
+  <img src="{{ object.image_preview|mediapath }}" height=300 />
+        <div class="card-body text-center ">
+            <h5 class="card-title">{{ object.header|title }}</h5>
+            <p class="text-center">{{ object.content|capfirst}}</p>
+          </div>
+</figure>
+
+{% endblock %}

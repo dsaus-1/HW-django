@@ -2,7 +2,6 @@
 {% load mediapath_filter %}
 {% load mediapath_tag %}
 
-
 {% block home %}
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -30,8 +29,6 @@
             <td>{{ object.id }}</td>
             <td>{{ object.product_name|title }}</td>
             <td>{{ object.descriptions|slice:":100"|capfirst}}</td>
-{#            <td><img src="/media/{{ object.image_preview}}" height=100 /></td>#}
-{#            <td><img src="{{ object.image_preview|mediapath}}" height=100 /></td>#}
             <td><img src="{% mediapath object.image_preview %}" height=100 /></td>
             <td>{{ object.category }}</td>
             <td>{{ object.price }}</td>
@@ -47,4 +44,3 @@
 
 
 {% endblock %}
-
