@@ -12,7 +12,6 @@ def contacts(request):
     return render(request, 'catalog/contact.html')
 
 
-
 class ProductListView(ListView):
     model = Product
 
@@ -21,13 +20,16 @@ class BlogListView(ListView):
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('header', 'slug', 'content', 'image_preview')
+    fields = ('header', 'content', 'image_preview')
     success_url = reverse_lazy('catalog:blog')
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('header', 'slug', 'content', 'image_preview')
-    success_url = reverse_lazy('catalog:blog')
+    fields = ('header', 'content', 'image_preview')
+
+    def get_success_url(self):
+        slug = self.kwargs["slug"]
+        return reverse("catalog:detail", kwargs={"slug": slug})
 
 class BlogDeleteView(DeleteView):
     model = Blog
@@ -36,11 +38,12 @@ class BlogDeleteView(DeleteView):
 class BlogDetailView(DetailView):
     model = Blog
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.number_of_views += 1
+        obj.save()
+
+        return obj
 
 
-def counter_of_views(request, pk):
-    blog_item = get_object_or_404(Blog, pk=pk)
-    blog_item.number_of_views += 1
-    blog_item.save()
 
-    return redirect(reverse('catalog:detail'))

@@ -8,7 +8,7 @@
                 <form enctype="multipart/form-data" method="post" class="text-center">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Создать публикацию</button>
+                    <button type="submit" href="{% url 'catalog:detail' object.slug %}">Создать публикацию</button>
                 </form>
             </div>
         </div>
