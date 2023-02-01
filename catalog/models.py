@@ -11,7 +11,7 @@ class Category(models.Model):
     descriptions_category = models.CharField(max_length=300, verbose_name='Описание')
 
     def __str__(self):
-        return f'{self.id} {self.category_name}'
+        return f'{self.category_name}'
 
 
 class Product(models.Model):
@@ -24,7 +24,7 @@ class Product(models.Model):
     date_created = models.DateTimeField(verbose_name='Дата создания')
     date_of_change = models.DateTimeField(verbose_name='Дата изменения')
 
-    cat_fk = models.ForeignKey(Category, on_delete=models.PROTECT)
+    cat_fk = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория')
 
     def __str__(self):
         return f'{self.id} {self.product_name} {self.price} {self.category}'
@@ -58,4 +58,27 @@ class Blog(models.Model):
 
     def __str__(self):
         return f'{self.header} {self.content}'
+
+
+class Version(models.Model):
+    STATUSES = (
+        ('active', 'активная'),
+        ('outdated', 'устаревшая')
+    )
+    STATUS_ACTIVE = 'active'
+    STATUS_OUTDATED = 'outdated'
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
+    version_number = models.IntegerField(verbose_name='Номер')
+    version_name = models.CharField(max_length=35, verbose_name='Название')
+    sign = models.CharField(max_length=15, default=STATUS_ACTIVE, choices=STATUSES, verbose_name='Признак')
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'
+
+    def __str__(self):
+        return f'{self.version_name}'
+
+
 

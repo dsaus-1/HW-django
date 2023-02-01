@@ -4,43 +4,52 @@
 
 {% block home %}
 
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Ларек</h1>
-    <p class="lead">Ларек - это отличный вариант для покупки свежих и не очень свежих продуктов</p>
-</div>
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Ларек</h1>
+        <p class="lead">Ларек - это отличный вариант для покупки свежих и не очень свежих продуктов</p>
+    </div>
 
-<div class="container">
-<table class="table table-bordered border-primary"> {# table-success #}
-  <thead>
-    <tr>
-        <td>ID</td>
-        <td>Название</td>
-        <td>Описание</td>
-        <td>Изображение</td>
-        <td>Категория</td>
-        <td>Цена</td>
-        <td>Дата создания</td>
-        <td>Дата изменения</td>
-    </tr>
-  </thead>
-  <tbody>
-    {% for object in object_list %}
-        <tr>
-            <td>{{ object.id }}</td>
-            <td>{{ object.product_name|title }}</td>
-            <td>{{ object.descriptions|slice:":100"|capfirst}}</td>
-            <td><img src="{% mediapath object.image_preview %}" height=100 /></td>
-            <td>{{ object.category }}</td>
-            <td>{{ object.price }}</td>
-            <td>{{ object.date_created }}</td>
-            <td>{{ object.date_of_change }}</td>
-        </tr>
-        </div>
+    <div class="container">
+        <table class="table table-hover border-dark"> {# table-success #}
+            <thead>
+            <tr>
+                <td>Изображение</td>
+                <td>Название</td>
+                <td>Описание</td>
+                <td>Категория</td>
+                <td>Сорт</td>
+                <td>Цена</td>
+                <td>Дата создания</td>
+                <td>Дата изменения</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td><img src="{% mediapath object.image_preview %}" height=100/></td>
+                    <td>{{ object.product_name|title }}</td>
+                    <td>{{ object.descriptions|slice:":100"|capfirst }}</td>
+                    <td>{{ object.category }}</td>
+                    <td>{% if object.version_set.all.last == None %}
 
-        {% endfor %}
+                        {% else %}
+                        {{ object.version_set.all.last|capfirst }}
+                    {% endif %}</td>
+                    <td>{{ object.price }}</td>
+                    <td>{{ object.date_created }}</td>
+                    <td>{{ object.date_of_change }}</td>
+                    <td><a class="text-black" href="{% url 'catalog:product_detail' object.pk %}">Подробнее</a></td>
+                    <td><a class="text-black" href="{% url 'catalog:product_update' object.pk %}">Изменить</a></td>
+                    <td><a class="text-black" href="{% url 'catalog:product_delete' object.pk %}">Удалить</a></td>
+                </tr>
+                </div>
+
+            {% endfor %}
+
     </tbody>
+    <td><a class="p-2 btn btn-dark" href="{% url 'catalog:product_create' %}">Добавить продукт</a></td>
     </table>
-<script src="/static/js/bootstrap.bundle.js"></script>
+    <script src="/static/js/bootstrap.bundle.js"></script>
 
 
 {% endblock %}

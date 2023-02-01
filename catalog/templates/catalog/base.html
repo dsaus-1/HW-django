@@ -6,13 +6,13 @@
     <title>Ларек</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body style="background-image: url(/static/cf1477b8c09243a6842a709ccf56110d.jpg)">
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
     <h5 class="my-0 mr-md-auto font-weight-normal">Ларек</h5>
     <nav class="ms-5">
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home' %}">Каталог</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:blog' %}">Блог</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
+        <a class="p-2 btn btn-outline-dark" href="{% url 'catalog:home' %}">Каталог</a>
+        <a class="p-2 btn btn-outline-dark" href="{% url 'catalog:blog' %}">Блог</a>
+        <a class="p-2 btn btn-outline-dark" href="{% url 'catalog:contacts' %}">Контакты</a>
     </nav>
 </div>
 
@@ -20,6 +20,12 @@
 {% endblock %}
 
 {% block home %}
+{% endblock %}
+{% block product_detail %}
+{% endblock %}
+{% block product_form %}
+{% endblock %}
+{% block product_delete %}
 {% endblock %}
 
 {% block blog %}
@@ -33,6 +39,7 @@
 
 {% block detail %}
 {% endblock %}
+
 <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-12 col-md">
@@ -63,7 +70,7 @@
             </div>
         </div>
     </footer>
-</div>
+
 
 </body>
 </html>
