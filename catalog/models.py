@@ -1,6 +1,7 @@
 from django.db import models
 from pytils.translit import slugify
 
+from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -19,12 +20,12 @@ class Product(models.Model):
     product_name = models.CharField(max_length=200, verbose_name='Название')
     descriptions = models.CharField(max_length=300, verbose_name='Описание')
     image_preview = models.ImageField(upload_to='product/', **NULLABLE, verbose_name='Изображение')
-    category = models.IntegerField(verbose_name='Категория')
     price = models.IntegerField(verbose_name='Цена')
     date_created = models.DateTimeField(verbose_name='Дата создания')
     date_of_change = models.DateTimeField(verbose_name='Дата изменения')
 
-    cat_fk = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', **NULLABLE)
 
     def __str__(self):
         return f'{self.id} {self.product_name} {self.price} {self.category}'
