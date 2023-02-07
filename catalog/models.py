@@ -16,16 +16,39 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    STATUSES = (
+        (True, 'активно'),
+        (False, 'модерация')
+    )
+    STATUS_ACTIVE = True
+    STATUS_MODERATION = False
 
     product_name = models.CharField(max_length=200, verbose_name='Название')
     descriptions = models.CharField(max_length=300, verbose_name='Описание')
     image_preview = models.ImageField(upload_to='product/', **NULLABLE, verbose_name='Изображение')
     price = models.IntegerField(verbose_name='Цена')
-    date_created = models.DateTimeField(verbose_name='Дата создания')
-    date_of_change = models.DateTimeField(verbose_name='Дата изменения')
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    date_of_change = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    status = models.BooleanField(default=STATUS_MODERATION, choices=STATUSES, verbose_name='Статус отображения')
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', **NULLABLE)
+
+    class Meta:
+        permissions = [
+            (
+                'change_status',
+                'Can change the status'
+            ),
+            (
+                'change_descriptions_product',
+                'Can change the description of products'
+            ),
+            (
+                'change_category_in_product',
+                'Can change the product category'
+            )
+        ]
 
     def __str__(self):
         return f'{self.id} {self.product_name} {self.price} {self.category}'
@@ -44,7 +67,7 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=50, null=True, blank=True, verbose_name='URL')
     content = models.CharField(max_length=600, verbose_name='содержимое')
     image_preview = models.ImageField(upload_to='product/', **NULLABLE, verbose_name='Изображение')
-    date_created = models.DateTimeField(auto_now=True, verbose_name='Дата создания')
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     publication_status = models.CharField(max_length=15, default=STATUS_MODERATION, choices=STATUSES, verbose_name='признак публикации')
     number_of_views = models.IntegerField(default=0, verbose_name='количество просмотров')
 

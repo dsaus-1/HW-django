@@ -76,7 +76,7 @@ def reset_password(request):
                 user = False
 
             if user:
-                new_password = secrets.token_urlsafe(18)[:15]
+                new_password = User.objects.make_random_password(length=15)
                 user.set_password(new_password)
                 user.save()
                 send_mail(

@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin
 from django.db import transaction
 from django.forms import inlineformset_factory
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
 from catalog.models import Product, Blog, Version
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -31,7 +32,7 @@ class ProductCreateView(CreateView):
             self.object.save()
         return super(ProductCreateView, self).form_valid(form)
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
@@ -61,6 +62,20 @@ class ProductUpdateView(UpdateView):
 
         return super().form_valid(form)
 
+    def test_func(self):
+        product = self.get_object()
+        if self.request.user.is_superuser:
+            return True
+        return product.user == self.request.user
+
+class ModeratorUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Product
+    form_class = ModeratorProductForm
+    success_url = reverse_lazy('catalog:home')
+    permission_required = 'catalog.change_descriptions_product'
+    template_name = 'catalog/product_form.html'
+
+
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:home')
@@ -73,12 +88,17 @@ class ProductDetailView(DetailView):
 class BlogListView(ListView):
     model = Blog
 
-class BlogCreateView(CreateView):
+class BlogCreateView(UserPassesTestMixin, CreateView):
     model = Blog
-    fields = ('header', 'content', 'image_preview')
+    fields = ('header', 'content', 'image_preview', 'publication_status')
     success_url = reverse_lazy('catalog:blog')
 
-class BlogUpdateView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        return self.request.user == self.request.user.has_perm("catalog.add_blog")
+
+class BlogUpdateView(UserPassesTestMixin, UpdateView):
     model = Blog
     fields = ('header', 'content', 'image_preview')
 
@@ -86,9 +106,19 @@ class BlogUpdateView(UpdateView):
         slug = self.kwargs["slug"]
         return reverse("catalog:detail", kwargs={"slug": slug})
 
-class BlogDeleteView(DeleteView):
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        return self.request.user == self.request.user.has_perm("catalog.change_blog")
+
+class BlogDeleteView(UserPassesTestMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy('catalog:blog')
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        return self.request.user == self.request.user.has_perm("catalog.delete_blog")
 
 class BlogDetailView(DetailView):
     model = Blog
@@ -99,6 +129,3 @@ class BlogDetailView(DetailView):
         obj.save()
 
         return obj
-
-
-

@@ -7,7 +7,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user', 'status']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -35,7 +35,10 @@ class ProductForm(forms.ModelForm):
 
         return descriptions
 
-
+class ModeratorProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('descriptions', 'status', 'category',)
 
 
 class VersionForm(forms.ModelForm):
