@@ -3,10 +3,12 @@ from django.db import transaction
 from django.forms import inlineformset_factory
 
 from catalog.forms import ProductForm, VersionForm, ModeratorProductForm, BlogForm
-from catalog.models import Product, Blog, Version
+from catalog.models import Product, Blog, Version, Category
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy, reverse
+
+from catalog.services import cache_products, cache_categories
 
 
 def contacts(request):
@@ -75,13 +77,27 @@ class ModeratorUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.change_descriptions_product'
     template_name = 'catalog/product_form.html'
 
-
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:home')
 
 class ProductDetailView(DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        print(self.object)
+        context_data['cache_product'] = cache_products(self.object)
+        return context_data
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data['cache_categories'] = cache_categories()
+        return context_data
 
 
 

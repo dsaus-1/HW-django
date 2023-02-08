@@ -40,7 +40,8 @@ class ProductForm(forms.ModelForm):
 class ModeratorProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('descriptions', 'status', 'category',)
+        fields = '__all__'
+        exclude = ['user']
 
 
 class VersionForm(forms.ModelForm):

@@ -51,7 +51,7 @@ class Product(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.id} {self.product_name} {self.price} {self.category}'
+        return f'{self.product_name}'
 
 
 class Blog(models.Model):

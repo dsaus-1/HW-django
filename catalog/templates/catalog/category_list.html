@@ -1,0 +1,43 @@
+{% extends 'catalog/base.html' %}
+{% load mediapath_filter %}
+{% load mediapath_tag %}
+
+{% block home %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Ларек</h1>
+        <p class="lead">Ларек - это отличный вариант для покупки свежих и не очень свежих продуктов</p>
+    </div>
+
+    <div class="container">
+        <table class="table table-hover border-dark"> {# table-success #}
+            <thead>
+            <tr>
+                <td>Название категории</td>
+                <td>Описание</td>
+                <td>Продукты</td>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in cache_categories %}
+                <tr>
+                <td>{{ category.category_name|title }}</td>
+                <td>{{ category.descriptions_category|capfirst }}</td>
+                <td>
+                    {% for product in category.product_set.all %}
+                        {{ product.product_name|title }}<br>
+                    {% endfor %}</td>
+
+
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/static/js/bootstrap.bundle.js"></script>
+
+
+{% endblock %}

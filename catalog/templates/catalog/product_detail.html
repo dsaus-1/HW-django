@@ -5,17 +5,18 @@
 <div class="container-xl">
         <br>
         <br>
-<img src="{{ object.image_preview|mediapath }}" height=300 />
+<img src="{{ cache_product.first.image_preview|mediapath }}" height=300 />
 
-        <p class="h3">Продукт: {{ object.product_name|capfirst }}</p>
+{#        <p class="h3">Продукт: {{ object.product_name|capfirst }}</p>#}
+        <p class="h3">Продукт: {{ cache_product.first.product_name|capfirst }}</p>
 
-        <p>Описание: {{ object.descriptions|capfirst}}</p>
+        <p>Описание: {{ cache_product.first.descriptions|capfirst}}</p>
         <br>
         <br>
-        <p>Категория:   {{ object.category.category_name }} </p>
-        <p>Цена:   {{ object.price }} </p>
-        <p>Дата создания:  {{ object.date_created }}</p>
-        <p>Дата изменения:  {{ object.date_of_change }}</p>
+        <p>Категория:   {{ cache_product.first.category.category_name }} </p>
+        <p>Цена:   {{ cache_product.first.price }} </p>
+        <p>Дата создания:  {{ cache_product.first.date_created }}</p>
+        <p>Дата изменения:  {{ cache_product.first.date_of_change }}</p>
 
         <td><a class="p-2 btn btn-dark" href="{% url 'catalog:home' %}">Назад</a></td>
 

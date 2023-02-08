@@ -14,6 +14,8 @@ urlpatterns = [
     path('moderator/product_update/<int:pk>/', ModeratorUpdateView.as_view(), name='moderator_product_update'),
     path('product_delete/<int:pk>/', login_required(ProductDeleteView.as_view()), name='product_delete'),
     path('product_detail/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('category/', CategoryListView.as_view(), name='category'),
+
     path('blog/', BlogListView.as_view(), name='blog'),
     path('create/', login_required(BlogCreateView.as_view()), name='create'),
     path('update/<slug:slug>/', login_required(BlogUpdateView.as_view()), name='update'),

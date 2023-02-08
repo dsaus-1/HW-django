@@ -47,19 +47,25 @@
                             <td><a class="text-black" href="{% url 'catalog:moderator_product_update' object.pk %}">Изменить</a>
                             </td>
                         {% endif %}
-                        {% if user.is_superuser or user == object.user%}
+                        {% if user.is_superuser or user == object.user %}
                             <td><a class="text-black" href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
                             </td>
                         {% endif %}
-                        <td><a class="text-black" href="{% url 'catalog:product_delete' object.pk %}">Удалить</a></td>
-                    </tr>
+                        {% if user.is_superuser %}
+
+                            <td><a class="text-black" href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
+                            </td>
+                            </tr>
+                        {% endif %}
                 {% endif %}
                 </div>
 
             {% endfor %}
 
     </tbody>
+    {% if user.groups.all.0.name == 'moderator' or user.is_superuser %}
     <td><a class="p-2 btn btn-dark" href="{% url 'catalog:product_create' %}">Добавить продукт</a></td>
+    {% endif %}
     </table>
     <script src="/static/js/bootstrap.bundle.js"></script>
 
