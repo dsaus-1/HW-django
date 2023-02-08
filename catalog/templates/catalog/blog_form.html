@@ -1,19 +1,22 @@
 {% extends 'catalog/base.html' %}
 
 {% block create %}
-    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <div class="col-4 ">
-        <div class="card ">
-            <div class="card-body">
-                <form enctype="multipart/form-data" method="post" class="text-center">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" href="{% url 'catalog:blog' %}">Создать публикацию</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    </div>
 
+    <div class="container">
+        <form method="post">
+            <div class="row">
+                <div class="col-5">
+                    <div class="card">
+                        <div class="card-body">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="p-2 btn btn-dark" type="submit">Создать публикацию</button>
+                            <td><a class="p-2 btn btn-dark" href="{% url 'catalog:blog' %}">Назад</a></td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}

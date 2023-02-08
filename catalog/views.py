@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMi
 from django.db import transaction
 from django.forms import inlineformset_factory
 
-from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
+from catalog.forms import ProductForm, VersionForm, ModeratorProductForm, BlogForm
 from catalog.models import Product, Blog, Version
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -90,7 +90,7 @@ class BlogListView(ListView):
 
 class BlogCreateView(UserPassesTestMixin, CreateView):
     model = Blog
-    fields = ('header', 'content', 'image_preview', 'publication_status')
+    form_class = BlogForm
     success_url = reverse_lazy('catalog:blog')
 
     def test_func(self):
@@ -100,7 +100,7 @@ class BlogCreateView(UserPassesTestMixin, CreateView):
 
 class BlogUpdateView(UserPassesTestMixin, UpdateView):
     model = Blog
-    fields = ('header', 'content', 'image_preview')
+    form_class = BlogForm
 
     def get_success_url(self):
         slug = self.kwargs["slug"]

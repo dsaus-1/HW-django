@@ -1,5 +1,7 @@
 from django import forms
-from catalog.models import Product, Version
+
+from catalog.forms_mixins import StyleFormMixin
+from catalog.models import Product, Version, Blog
 
 
 class ProductForm(forms.ModelForm):
@@ -52,3 +54,9 @@ class VersionForm(forms.ModelForm):
 
         for name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+
+class BlogForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ('header', 'content', 'image_preview', 'publication_status')

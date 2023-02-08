@@ -41,7 +41,6 @@
                         <td>{{ object.date_created }}</td>
                         <td>{{ object.date_of_change }}</td>
                         <td>{{ object.user.email }}</td>
-                        <td>{{ user.is_superuser }}</td>
                         <td><a class="text-black" href="{% url 'catalog:product_detail' object.pk %}">Подробнее</a></td>
                         {#                        {% if perms.catalog.change_status and perms.catalog.change_descriptions_product and perms.catalog.change_category_in_product %}#}
                         {% if user.groups.all.0.name == 'moderator' %}

@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views.generic import UpdateView, CreateView
 
-from users.forms import CustomEditUserForm, CustomRegisterUserForm
+from users.forms import CustomEditUserForm, CustomRegisterUserForm, CustomAuthenticationForm
 from users.models import User
 from users.services import confirm_account
 
@@ -15,6 +15,7 @@ from users.services import confirm_account
 
 class CustomLoginView(LoginView):
     template_name = 'users/login.html'
+    form_class = CustomAuthenticationForm
 
 def page_after_registration(request):
     return render(request, 'users/login_accept.html')
